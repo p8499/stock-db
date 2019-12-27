@@ -30,14 +30,14 @@ if int(datetime.strptime(current_end,'%Y-%m-%d').strftime('%m')) < 12:
     # 每条补全其同年年报pl.kpi
     sql_history_year = 'SELECT %s FROM income_statement WHERE symbol = $1 AND EXTRACT(YEAR FROM "end") = EXTRACT(YEAR FROM $2) AND EXTRACT(MONTH FROM "end") = 12' % kpi
     plan_history_year = plpy.prepare(sql_history_year, ['CHAR', 'DATE'])
-    for row in rows_history:
+    for row in reversed(rows_history):
         rows_history_year = list(plpy.execute(plan_history_year, [symbol, row['end']]))
         if len(rows_history_year) > 0:
             row['year_%s' % kpi] = rows_history_year[0][kpi]
         else:
             rows_history.remove(row)
     # 去除无法计算的行
-    for row in rows_history:
+    for row in reversed(rows_history):
         if row[kpi] <= 0 or row['year_%s' % kpi] <= 0:
             rows_history.remove(row)
     # 补充完年kpi后、去除无法计算的行后，列表不能无数据
