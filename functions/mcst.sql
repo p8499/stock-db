@@ -37,7 +37,7 @@ for row in rows:
         plpy.info('Insufficient data, sql = %s, $1 = %s, $2 = %s' % (sql_flow_share, symbol, row['eob']))
         return cachew(None)
 # 去除无法计算的数据
-for row in rows:
+for row in reversed(rows):
     if row['volume'] == 0 or row['flow_share'] == 0:
         rows.remove(row)
 if len(rows) == 0:
