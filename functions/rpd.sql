@@ -9,7 +9,7 @@ if len(rows) == 0:
     plpy.info('Not categorized to any industry, sql = %s, $1 = %s, $2 = %s' % (sql, symbol, date))
     return None
 # 去null值
-for row in rows:
+for row in reversed(rows):
     if row['kpi'] is None:
         rows.remove(row)
 # 行号
