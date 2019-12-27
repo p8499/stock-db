@@ -19,6 +19,6 @@ for i, row in enumerate(rows):
         index = i
         break
 # 计算
-return (index + 1) / len(rows)
+return (index + 1) / len(rows) if len(rows) > 0 else 0
 $$
 LANGUAGE plpython3u;
