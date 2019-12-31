@@ -7,6 +7,7 @@
 \i tables/industries.sql;
 \i tables/industry_constituents.sql;
 \i tables/instrumentinfos.sql;
+\i tables/finance.sql;
 \i tables/power.sql;
 \i tables/trading_derivative_indicator.sql;
 
@@ -21,13 +22,15 @@
 \i functions/cacher.sql
 \i functions/cachew.sql
 \i functions/can.sql
+\i functions/ci.sql
 \i functions/cr.sql
 \i functions/dar.sql
 \i functions/dma.sql
 \i functions/em.sql
 \i functions/er.sql
-\i functions/finance.sql
+\i functions/fin.sql
 \i functions/hod.sql
+\i functions/ici.sql
 \i functions/lod.sql
 \i functions/ltlr.sql
 \i functions/mcst.sql
