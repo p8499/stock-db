@@ -1,5 +1,5 @@
 -- 策略函数，即为真时，代表通过价值过滤要求
-CREATE OR REPLACE FUNCTION finance(symbol CHAR, date DATE)
+CREATE OR REPLACE FUNCTION fin(symbol CHAR, date DATE)
   RETURNS BOOLEAN AS $$
 sql = "SELECT 1" \
     "WHERE rpa($1, $2, 'dar') <= 0.8" \
