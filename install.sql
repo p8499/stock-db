@@ -29,6 +29,7 @@
 \i functions/em.sql
 \i functions/er.sql
 \i functions/fin.sql
+\i functions/grow.sql
 \i functions/hod.sql
 \i functions/ici.sql
 \i functions/lod.sql
