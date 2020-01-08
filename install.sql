@@ -1,3 +1,4 @@
+\encoding UTF8;
 \i tables/balance_sheet.sql;
 \i tables/cache.sql;
 \i tables/cashflow_statement.sql;
