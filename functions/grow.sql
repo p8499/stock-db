@@ -2,13 +2,24 @@
 CREATE OR REPLACE FUNCTION grow(symbol CHAR, date DATE)
   RETURNS NUMERIC AS $$
 from datetime import datetime
+def cachew(r):
+    sql_cachew = 'SELECT cachew($1, $2, $3, $4)'
+    plan_cachew = plpy.prepare(sql_cachew, ['CHAR', 'DATE', 'VARCHAR', 'NUMERIC'])
+    plpy.execute(plan_cachew, [symbol, date, 'grow', r])
+    return r
+# 查cache
+sql_cacher = 'SELECT yn, val FROM cacher($1, $2, $3)'
+plan_cacher = plpy.prepare(sql_cacher, ['CHAR', 'DATE', 'VARCHAR'])
+rows_cacher = list(plpy.execute(plan_cacher, [symbol, date, 'grow']))
+if rows_cacher[0]['yn']:
+    return rows_cacher[0]['val']
 # 查询最近一条利润表
 sql_last_pl = 'SELECT "end", parenetp FROM income_statement WHERE symbol = $1 AND pub <= $2 ORDER BY "end" DESC LIMIT 1'
 plan_last_pl = plpy.prepare(sql_last_pl, ['CHAR', 'DATE'])
 rows_last_pl = list(plpy.execute(plan_last_pl, [symbol, date]))
 if len(rows_last_pl) == 0:
     plpy.info('Insufficient data, sql = %s, $1 = %s, $2 = %s' % (sql_last_pl, symbol, date))
-    return 0
+    return cachew(0)
 # 计算最近的归属母公司利润
 parenetp = 0
 # 依照以下两种情况，计算最近的归属母公司利润parenetp
@@ -21,7 +32,7 @@ if int(datetime.strptime(last_end, '%Y-%m-%d').strftime('%m')) < 12:
     rows_parenetp_0 = list(plpy.execute(plan_parenetp_0, [symbol, date, 'parenetp']))
     if rows_parenetp_0[0]['plforecast'] is None:
         plpy.info('Result is null, unable to calculate GROW, sql = %s, $1 = %s, $2 = %s, $2 = %s' % (sql_parenetp_0, symbol, date, 'parenetp'))
-        return 0
+        return cachew(0)
     parenetp = rows_parenetp_0[0]['plforecast']
 else:
     # 如果利润表最后一条是年报，则直接取它的归属母公司利润
@@ -36,6 +47,6 @@ for i, row in enumerate(rows_parenetp_n):
     if row['parenetp'] < parenetp:
         points += 1 / (2 ** i)
     parenetp = row['parenetp']
-return points
+return cachew(points)
 $$
 LANGUAGE plpython3u;
