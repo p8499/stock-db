@@ -21,7 +21,7 @@ if len(rows_current) == 0:
 current_kpi = rows_current[0][kpi]
 current_end = rows_current[0]['end']
 # 如果最新财报为季报，则预测；如为年报，则直接返回
-if int(datetime.strptime(current_end,'%Y-%m-%d').strftime('%m')) < 12:
+if int(datetime.strptime(current_end, '%Y-%m-%d').strftime('%m')) < 12:
     n = 3
     # n条历史同季度pl.kpi
     sql_history = 'SELECT "end", %s FROM income_statement WHERE symbol = $1 AND "end" < $2 AND EXTRACT(MONTH FROM "end") = EXTRACT(MONTH FROM $2) ORDER BY "end" DESC LIMIT %d' % (kpi, n)
