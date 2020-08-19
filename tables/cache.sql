@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS finance;
+DROP TABLE IF EXISTS cache;
 CREATE TABLE cache(
   symbol CHAR(11)    NOT NULL,
   date   DATE        NOT NULL,
